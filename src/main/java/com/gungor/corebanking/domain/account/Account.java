@@ -71,6 +71,13 @@ public final class Account {
         );
     }
 
+    public void freeze() {
+        if (status != AccountStatus.ACTIVE) {
+            throw new IllegalArgumentException("Only an active account can be frozen, but was :" + status);
+        }
+        this.status = AccountStatus.FROZEN;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof Account account)) return false;

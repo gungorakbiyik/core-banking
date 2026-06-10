@@ -1,4 +1,4 @@
-package com.gungor.corebanking.domain.model;
+package com.gungor.corebanking.domain.shared;
 
 import org.junit.jupiter.api.Test;
 

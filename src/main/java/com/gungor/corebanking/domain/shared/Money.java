@@ -1,4 +1,4 @@
-package com.gungor.corebanking.domain.model;
+package com.gungor.corebanking.domain.shared;
 
 import com.gungor.corebanking.common.Preconditions;
 

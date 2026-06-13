@@ -73,9 +73,23 @@ public final class Account {
 
     public void freeze() {
         if (status != AccountStatus.ACTIVE) {
-            throw new IllegalArgumentException("Only an active account can be frozen, but was :" + status);
+            throw new IllegalStateException("Only an active account can be frozen, but was :" + status);
         }
         this.status = AccountStatus.FROZEN;
+    }
+
+    public void close() {
+        if (status != AccountStatus.ACTIVE && status != AccountStatus.FROZEN) {
+            throw new IllegalStateException("Only an active or frozen account can be closed, but was :" + status);
+        }
+        this.status = AccountStatus.CLOSED;
+    }
+
+    public void unfreeze() {
+        if (status != AccountStatus.FROZEN) {
+            throw new IllegalStateException("Only a frozen account can be unfrozen, but was :" + status);
+        }
+        this.status = AccountStatus.ACTIVE;
     }
 
     @Override

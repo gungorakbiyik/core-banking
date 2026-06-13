@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Currency;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.junit.jupiter.api.Assertions.*;
 
 class AccountTest {
@@ -97,8 +97,53 @@ class AccountTest {
     void freeze_throws_whenAlreadyFrozen() {
         Account account = createAccountWithDefaults();
         account.freeze();
-        assertThatIllegalArgumentException().isThrownBy(account::freeze);
+        assertThatIllegalStateException().isThrownBy(account::freeze);
     }
+
+    @Test
+    void freeze_throws_whenClosed() {
+        Account account = createAccountWithDefaults();
+        account.close();
+        assertThatIllegalStateException().isThrownBy(account::freeze);
+    }
+
+    @Test
+    void close_setsStatusToClosed() {
+        Account account = createAccountWithDefaults();
+        account.close();
+        assertEquals(AccountStatus.CLOSED, account.getStatus());
+    }
+
+    @Test
+    void close_throws_whenAlreadyClosed() {
+        Account account = createAccountWithDefaults();
+        account.close();
+        assertThatIllegalStateException().isThrownBy(account::close);
+    }
+
+    @Test
+    void close_fromFrozen() {
+        Account account = createAccountWithDefaults();
+        account.freeze();
+        account.close();
+        assertEquals(AccountStatus.CLOSED, account.getStatus());
+    }
+
+    @Test
+    void unfreeze_setsStatusToActive() {
+        Account account = createAccountWithDefaults();
+        account.freeze();
+        account.unfreeze();
+        assertEquals(AccountStatus.ACTIVE, account.getStatus());
+    }
+
+    @Test
+    void unfreeze_throws_whenAlreadyNotFrozen() {
+        Account account = createAccountWithDefaults();
+        assertThatIllegalStateException().isThrownBy(account::unfreeze);
+    }
+
+
 
     private Account createAccountWithDefaults() {
         return Account.open(CustomerId.newId(),

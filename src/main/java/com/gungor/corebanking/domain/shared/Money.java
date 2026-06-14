@@ -26,6 +26,10 @@ public final class Money {
         return new Money(amount, currency);
     }
 
+    public Currency currency() {
+        return currency;
+    }
+
     public Money plus(Money other) {
         Preconditions.notNull(other, "other");
         requireSameCurrency(other);

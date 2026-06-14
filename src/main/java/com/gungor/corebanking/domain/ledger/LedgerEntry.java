@@ -44,7 +44,7 @@ public final class LedgerEntry {
         return direction;
     }
 
-    public static LedgerEntry of(AccountId accountId,
+    static LedgerEntry of(AccountId accountId,
                                  Money amount,
                                  Direction direction) {
         return new LedgerEntry(
